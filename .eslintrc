@@ -1,0 +1,22 @@
+{
+    "extends": ["airbnb", "plugin:prettier/recommended"],
+    "parser": "babel-eslint",
+    "plugins": ["prettier"],
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "rules": {
+      "indent": ["error", 2],
+      "linebreak-style": ["error", "unix"],
+      "semi": ["error", "always"],
+      "func-names": "off",
+      "max-len": [1, 120],
+      "prettier/prettier": "error",
+      "no-param-reassign": "off"
+    }
+  }

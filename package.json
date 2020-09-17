@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js",
-    "watch": "nodemon app.js"
+    "start": "node start.js",
+    "watch": "nodemon app.js",
+    "db:drop": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
   "dependencies": {
     "apollo-server-express": "^2.16.1",
@@ -26,9 +27,12 @@
     "morgan": "~1.9.1",
     "pg": "^8.3.0",
     "postgraphile": "^4.7.0",
-    "sequelize": "^6.3.4"
+    "sequelize": "^6.3.5",
+    "@babel/register": "^7.11.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@types/jest": "^25.1.4",
     "babel-eslint": "^10.1.0",
     "dotenv": "^8.2.0",
@@ -44,5 +48,8 @@
     "prettier": "^1.19.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
   }
 }

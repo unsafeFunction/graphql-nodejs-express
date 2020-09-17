@@ -16,14 +16,16 @@ const userResolvers = {
 };
 
 const userMutation = {
-  createUser: async (parent, { input }, { db }, info) => {
+  signUp: async (parent, { input }, { db }, info) => {
     const { User } = db;
 
-    const user = await User.create({
+    await User.create({
       ...input
     });
 
-    return user;
+    return {
+      token: "token"
+    };
   },
   updateUser: async (parent, { id, input }, { db }, info) => {
     const { User } = db;

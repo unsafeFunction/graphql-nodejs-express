@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "root",
     "password": "root",
     "database": "graphql",
     "host": "localhost",

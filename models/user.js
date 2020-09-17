@@ -1,4 +1,5 @@
 const { Model } = require("sequelize");
+const { hashPassword, validatePassword } = require("../src/utils/password.js");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -13,7 +14,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: true
+        }
+      },
       firstName: {
         type: DataTypes.STRING,
         defaultValue: null
@@ -21,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       lastName: {
         type: DataTypes.STRING,
         defaultValue: null
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
@@ -28,5 +39,12 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User"
     }
   );
+  User.addHook("beforeCreate", (user, options) => {
+    user.password = hashPassword(user.password);
+  });
+  User.prototype.validatePassword = password => {
+    validatePassword(password, this.password);
+  };
+
   return User;
 };

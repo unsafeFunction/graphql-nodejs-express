@@ -1,7 +1,10 @@
-const userResolvers = {
-  users: async (parent, args, { db }, info) => {
-    const { User } = db;
+const jsonwebtoken = require("jsonwebtoken");
+const { validatePassword } = require("../utils/password");
+const generateToken = require("../utils/auth");
 
+const userResolvers = {
+  users: async (parent, args, context, info) => {
+    const { User } = context.db;
     const users = User.findAll();
 
     return users;
@@ -19,13 +22,42 @@ const userMutation = {
   signUp: async (parent, { input }, { db }, info) => {
     const { User } = db;
 
-    await User.create({
+    const user = await User.create({
       ...input
     });
 
+    const token = generateToken({ email: user.email, id: user.id }, "4h");
+
     return {
-      token: "token"
+      token
     };
+  },
+  signIn: async (parent, { input }, { db }) => {
+    const { User } = db;
+    const { email, password: inputPassword } = input;
+
+    const user = await User.findOne({
+      where: {
+        email
+      }
+    });
+
+    if (!user) {
+      throw new Error("Email not exist");
+    }
+
+    const isPasswordValid = await validatePassword(
+      inputPassword,
+      user.password
+    );
+
+    if (isPasswordValid) {
+      const token = generateToken({ email: user.email, id: user.id }, "4h");
+
+      return {
+        token
+      };
+    }
   },
   updateUser: async (parent, { id, input }, { db }, info) => {
     const { User } = db;

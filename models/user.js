@@ -1,5 +1,5 @@
 const { Model } = require("sequelize");
-const { hashPassword, validatePassword } = require("../src/utils/password.js");
+const { hashPassword } = require("../src/utils/password.js");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -39,12 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User"
     }
   );
-  User.addHook("beforeCreate", (user, options) => {
+  User.addHook("beforeCreate", user => {
     user.password = hashPassword(user.password);
   });
-  User.prototype.validatePassword = password => {
-    validatePassword(password, this.password);
-  };
 
   return User;
 };

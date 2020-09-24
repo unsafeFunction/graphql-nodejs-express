@@ -5,9 +5,16 @@
   "scripts": {
     "start": "node start.js",
     "watch": "nodemon app.js",
+    "server": "concurrently -k npm:server:*",
+    "server:auth": "nodemon app.js",
+    "server:gateway": "wait-on tcp:3001 && nodemon ./gatewayServer.js",
     "db:drop": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
   "dependencies": {
+    "@apollo/federation": "^0.20.2",
+    "@apollo/gateway": "^0.20.2",
+    "@babel/register": "^7.11.5",
+    "@graphql-tools/merge": "^6.2.3",
     "apollo-server-express": "^2.16.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -19,16 +26,19 @@
     "express-graphql": "^0.11.0",
     "express-jwt": "^6.0.0",
     "graphql": "^15.3.0",
+    "graphql-middleware": "^4.0.2",
+    "graphql-shield": "^7.3.6",
     "http-errors": "~1.6.3",
+    "https-proxy-agent": "^5.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.10.0",
     "knex": "^0.21.2",
     "knex-migrate": "^1.7.4",
     "morgan": "~1.9.1",
     "pg": "^8.3.0",
     "postgraphile": "^4.7.0",
-    "sequelize": "^6.3.5",
-    "@babel/register": "^7.11.5"
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -50,6 +60,8 @@
     "request-promise": "^4.2.4"
   },
   "babel": {
-    "presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   }
 }

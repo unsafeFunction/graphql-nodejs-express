@@ -6,8 +6,10 @@ const hashPassword = password => {
   return bcrypt.hashSync(password, salt);
 };
 
-const validatePassword = (userPassword, storedPassword) => {
-  return bcrypt.compareSync(password, storedPassword);
+const validatePassword = async (inputPassword, storedPassword) => {
+  const isPasswordValid = await bcrypt.compare(inputPassword, storedPassword);
+
+  return isPasswordValid;
 };
 
 module.exports = {
